@@ -1,86 +1,147 @@
 <!DOCTYPE html>
 <html lang="fa">
 <head>
-  <meta charset="UTF-8">
-  <title>تنظیمات بازی برای SetEdit</title>
-  <style>
-    body { font-family: sans-serif; background: #f2f2f2; padding: 20px; direction: rtl; }
-    h1 { color: #333; }
-    select, input, button {
-      display: block; width: 100%; margin: 10px 0; padding: 10px;
-      border: 1px solid #ccc; border-radius: 5px;
-    }
-    #output { white-space: pre-wrap; background: #fff; padding: 10px; border: 1px solid #ccc; border-radius: 5px; }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>پنل گاد ساخت ستینگ</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .container {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 600px;
+            text-align: center;
+        }
+
+        h1 {
+            margin-bottom: 20px;
+            font-size: 24px;
+            color: #333;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+        }
+
+        label {
+            margin: 10px 0 5px;
+            font-size: 16px;
+            color: #333;
+        }
+
+        select {
+            padding: 8px;
+            font-size: 14px;
+            margin-bottom: 15px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+
+        button {
+            padding: 10px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        .result {
+            margin-top: 20px;
+            padding: 10px;
+            background-color: #f9f9f9;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 16px;
+            display: none;
+        }
+    </style>
 </head>
 <body>
-  <h1>پنل ساخت ستینگ مخصوص بازی</h1>
-  <select id="game">
-    <option value="">انتخاب بازی</option>
-    <option value="ff">Free Fire</option>
-    <option value="pubg">PUBG</option>
-    <option value="cod">Call of Duty</option>
-  </select>
-  <input type="text" id="brand" placeholder="برند گوشی (مثلاً Samsung)">
-  <input type="text" id="model" placeholder="مدل گوشی (مثلاً A12)">
-  <select id="setting">
-    <option value="">نوع ستینگ</option>
-    <option value="fps">FPS بالا</option>
-    <option value="aim">هدف‌گیری دقیق</option>
-    <option value="ping">پینگ پایین</option>
-    <option value="cool">کاهش دما</option>
-  </select>
-  <button onclick="generate()">نمایش ستینگ</button>
-  <div id="output"></div>
-  <button onclick="copy()">کپی کد</button>
+    <div class="container">
+        <h1>پنل گاد ساخت ستینگ</h1>
+        <form id="settingsForm">
+            <label for="game">انتخاب بازی:</label>
+            <select id="game" name="game">
+                <option value="pubg">PUBG</option>
+                <option value="cod">Call of Duty</option>
+                <option value="freefire">Free Fire</option>
+                <option value="warzone">Warzone</option>
+            </select>
 
-  <script>
-    const settings = {
-      "Samsung A12": {
-        "pubg": {
-          "fps": [
-            "debug.hwui.renderer=skiagl",
-            "persist.sys.sf.color_mode=9"
-          ],
-          "aim": [
-            "touch.size.calibration=area",
-            "touch.pressure.scale=0.001"
-          ]
-        },
-        "ff": {
-          "ping": [
-            "net.tethering.noprovisioning=true",
-            "dns.mode=manual"
-          ],
-          "cool": [
-            "thermal.config=low",
-            "ro.config.low_ram=true"
-          ]
-        }
-      }
-    };
+            <label for="brand">انتخاب برند گوشی:</label>
+            <select id="brand" name="brand">
+                <option value="samsung">سامسونگ</option>
+                <option value="xiaomi">شیائومی</option>
+                <option value="apple">اپل</option>
+                <option value="oneplus">وان پلاس</option>
+            </select>
 
-    function generate() {
-      const game = document.getElementById("game").value;
-      const brand = document.getElementById("brand").value.trim();
-      const model = document.getElementById("model").value.trim();
-      const setting = document.getElementById("setting").value;
-      const key = `${brand} ${model}`;
-      const out = document.getElementById("output");
+            <label for="model">انتخاب مدل گوشی:</label>
+            <select id="model" name="model">
+                <option value="a12">A12</option>
+                <option value="s21">S21</option>
+                <option value="iphone12">iPhone 12</option>
+                <option value="mi11">Mi 11</option>
+            </select>
 
-      if (settings[key] && settings[key][game] && settings[key][game][setting]) {
-        out.textContent = settings[key][game][setting].join("\n");
-      } else {
-        out.textContent = "برای این مدل یا تنظیمات، اطلاعاتی موجود نیست.";
-      }
-    }
+            <label for="settings">نوع ستینگ:</label>
+            <select id="settings" name="settings">
+                <option value="fps">FPS</option>
+                <option value="ping">پینگ</option>
+                <option value="temperature">دما</option>
+            </select>
 
-    function copy() {
-      const text = document.getElementById("output").textContent;
-      navigator.clipboard.writeText(text).then(() => {
-        alert("کد کپی شد!");
-      });
-    }
-  </script>
+            <button type="submit">تولید ستینگ</button>
+        </form>
+        <div id="result" class="result">
+            <!-- نتایج ستینگ‌ها اینجا نمایش داده خواهد شد -->
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('settingsForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            const game = document.getElementById('game').value;
+            const brand = document.getElementById('brand').value;
+            const model = document.getElementById('model').value;
+            const settings = document.getElementById('settings').value;
+
+            const resultDiv = document.getElementById('result');
+            resultDiv.style.display = 'block';
+
+            resultDiv.innerHTML = `
+                <h3>نتایج ستینگ:</h3>
+                <p><strong>بازی:</strong> ${game}</p>
+                <p><strong>برند گوشی:</strong> ${brand}</p>
+                <p><strong>مدل گوشی:</strong> ${model}</p>
+                <p><strong>نوع ستینگ:</strong> ${settings}</p>
+            `;
+        });
+    </script>
 </body>
-</html>
+          </html>
